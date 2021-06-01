@@ -3,7 +3,7 @@ import request from '@/axios';
 export function addProject(project) {
     return request({
         url: '/project',
-        methods: 'post',
+        method: 'post',
         data: project
     });
 }
@@ -11,14 +11,14 @@ export function addProject(project) {
 export function deleteProject(ids) {
     return request({
         url: '/project/' + ids,
-        methods: 'delete',
+        method: 'delete',
     });
 }
 
 export function editProject(project) {
     return request({
         url: '/project',
-        methods: 'put',
+        method: 'put',
         data: project
     });
 }
