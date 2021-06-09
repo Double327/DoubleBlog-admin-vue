@@ -121,7 +121,25 @@ export default {
         },
         /**删除数据*/
         handleDelete() {
-
+            this.delLoading = true;
+            let $this = this;
+            this.$confirm('是否删除主键为"' + $this.ids + '"的数据项?', '警告', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消'
+            }).then(function () {
+                del($this.base, $this.ids).then(res => {
+                    if (res.code === 200) {
+                        $this.init();
+                        $this.msgSuccess('删除成功');
+                    } else {
+                        $this.msgError('删除失败');
+                    }
+                }).catch(() => {
+                    $this.delLoading = false;
+                });
+            }).catch(()=>{
+                $this.delLoading = false;
+            });
         },
         /**数据导出*/
         handleExport() {

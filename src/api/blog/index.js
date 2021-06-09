@@ -23,6 +23,30 @@ export function editBlog(blog) {
     });
 }
 
+export function editBlogSupport(id, support) {
+    let data = {
+        'id': id,
+        'support': support
+    }
+    return request({
+        url: '/blog/blog/support',
+        method: 'put',
+        data: data
+    });
+}
+
+export function editBlogPrivate(id, pri) {
+    let data = {
+        'id': id,
+        'private': pri
+    }
+    return request({
+        url: '/blog/blog/private',
+        method: 'put',
+        data: data
+    });
+}
+
 export function blogDetails(id) {
     return request({
         url: '/blog/blog/' + id,

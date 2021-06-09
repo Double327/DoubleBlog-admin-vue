@@ -43,6 +43,7 @@
             type="danger"
             icon="el-icon-minus"
             size="mini"
+            @click="handleDelete"
         >删除
         </el-button>
       </el-col>
@@ -76,6 +77,7 @@
               v-model="scope.row.private"
               active-color="#13ce66"
               inactive-color="#ff4949"
+              @change="handlePrivateChange(scope.row)"
           />
         </template>
       </el-table-column>
@@ -85,6 +87,7 @@
               v-model="scope.row.support"
               active-color="#13ce66"
               inactive-color="#ff4949"
+              @change="handleSupportChange(scope.row)"
           />
         </template>
       </el-table-column>
@@ -132,6 +135,7 @@
 
 <script>
 import initData from "@/mixins/initData";
+import {editBlogPrivate, editBlogSupport} from "@/api/blog";
 
 export default {
   name: "blog",
@@ -149,6 +153,41 @@ export default {
       this.base = '/blog/blog';
       this.modalName = '博客';
       return true;
+    },
+    handleSupportChange(row) {
+      let text = row.support ? '推荐' : '取消推荐';
+      this.$confirm('确定要' + text + row.title + '博客吗?', '警告', {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消'
+      }).then(function () {
+        return editBlogSupport(row.id, row.support);
+      }).then(res => {
+        if (res.code === 200) {
+          this.msgSuccess(text + '成功');
+        } else {
+          this.msgError(text + '失败');
+        }
+      }).catch(function () {
+        row.support = row.support === false;
+      });
+    },
+    handlePrivateChange(row) {
+      let text = row.private ? '私有' : '取消私有';
+      this.$confirm('确定要将博客' + row.title + text + '吗?', '警告', {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消'
+      }).then(function () {
+        console.log(row.private);
+        return editBlogPrivate(row.id, row.private);
+      }).then(res => {
+        if (res.code === 200) {
+          this.msgSuccess(text + '成功');
+        } else {
+          this.msgError(text + '失败');
+        }
+      }).catch(function () {
+        row.private = row.private === false;
+      });
     }
   }
 }
