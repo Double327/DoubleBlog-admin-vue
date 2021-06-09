@@ -17,6 +17,21 @@ export const constantRoutes = [
         ]
     },
     {
+        path: '/login',
+        component: () => import('@/views/login'),
+        hidden: true
+    },
+    {
+        path: '/404',
+        component: () => import('@/views/error/404'),
+        hidden: true
+    },
+    {
+        path: '/401',
+        component: () => import('@/views/error/401'),
+        hidden: true
+    },
+    {
         path: '',
         component: Layout,
         redirect: 'index',
@@ -25,12 +40,6 @@ export const constantRoutes = [
                 path: 'index',
                 component: () => import('@/views/index'),
                 name: '首页',
-                meta: {title: '首页', icon: 'dashboard', noCache: true, affix: true}
-            },
-            {
-                path: 'blog',
-                component: () => import('@/views/blog/blog'),
-                name: '博客',
                 meta: {title: '首页', icon: 'dashboard', noCache: true, affix: true}
             },
         ]
@@ -60,4 +69,4 @@ export default new Router({
     mode: 'history', // 去掉url中的#
     scrollBehavior: () => ({y: 0}),
     routes: constantRoutes
-})
+});

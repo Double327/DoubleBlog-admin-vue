@@ -13,6 +13,8 @@ import Pagination from '@/components/pagination';
 
 import mavonEditor from 'mavon-editor';
 import 'mavon-editor/dist/css/index.css';
+
+import '@/router';
 import {addDateRange, handleTree, parseTime, resetForm, selectDictLabel} from "@/utils/doubleblog";
 
 Vue.use(mavonEditor)

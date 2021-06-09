@@ -3,7 +3,7 @@
 
     <div class="drawer-bg"></div>
     <!--侧边栏导航-->
-    <div class="sidebar-container"></div>
+    <sidebar class="sidebar-container"></sidebar>
     <!--页面容器-->
     <div class="main-container">
       <!--顶部导航、设置-->
@@ -20,10 +20,11 @@
 <script>
 import AppMain from "@/layout/components/AppMain";
 import RightPanel from "@/layout/components/RightPanel";
+import Sidebar from "@/layout/components/Sidebar";
 
 export default {
   name: "layout",
-  components: {RightPanel, AppMain}
+  components: {Sidebar, RightPanel, AppMain}
 }
 </script>
 
