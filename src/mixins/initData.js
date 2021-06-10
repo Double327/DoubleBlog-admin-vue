@@ -26,6 +26,8 @@ export default {
             list: [],
             // 是否显示弹出层
             show: false,
+            // 是否显示对话框
+            open: false,
             // 日期范围
             dateRange: [],
             //用来重置表单的form,有些属性清空不了
