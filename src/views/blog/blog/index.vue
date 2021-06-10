@@ -1,5 +1,6 @@
 <template>
   <div class="app-container">
+    <!--搜索表单-->
     <el-form :inline="true">
       <el-form-item label="文章标题">
         <el-input v-model="queryParams.title" placeholder="请输入文章标题" clearable size="small" style="width: 240px"
@@ -29,6 +30,7 @@
       </el-form-item>
     </el-form>
 
+    <!--操作按钮-->
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button
@@ -57,6 +59,7 @@
       </el-col>
     </el-row>
 
+    <!--数据表格-->
     <el-table v-loading="loading" :data="list" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center"></el-table-column>
       <el-table-column label="标题" prop="title" :show-overflow-tooltip="true"/>
@@ -105,7 +108,7 @@
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button type="text" size="mini" icon="el-icon-edit">
-            <router-link :to="'blog/edit/'+scope.row.id">编辑</router-link>
+            <router-link :to="'/blogOperation/blog/edit/'+scope.row.id">编辑</router-link>
           </el-button>
           <el-popover
               placement="top"
@@ -123,6 +126,7 @@
         </template>
       </el-table-column>
     </el-table>
+    <!--分页组件-->
     <pagination
         v-show="total>0"
         :total="total"
