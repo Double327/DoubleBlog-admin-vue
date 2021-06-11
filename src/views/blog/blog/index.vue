@@ -33,12 +33,14 @@
     <!--操作按钮-->
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
-        <el-button
-            type="primary"
-            icon="el-icon-plus"
-            size="mini"
-        >新增
-        </el-button>
+        <router-link to="/blogOperation/blog/add">
+          <el-button
+              type="primary"
+              icon="el-icon-plus"
+              size="mini"
+          >新增
+          </el-button>
+        </router-link>
       </el-col>
       <el-col :span="1.5">
         <el-button
