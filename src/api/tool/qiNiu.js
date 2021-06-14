@@ -14,3 +14,10 @@ export function editQiNiuConfig(data) {
         data: data
     });
 }
+
+export function getUploadToken() {
+    return request({
+        url: '/tool/qiNiu/token',
+        method: 'get'
+    });
+}

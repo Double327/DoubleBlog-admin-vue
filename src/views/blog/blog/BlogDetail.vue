@@ -73,7 +73,7 @@
               <div class="avatar-uploader">
                 <div class="el-upload el-upload--text">
                   <img v-if="form.thumbnail" :src="form.thumbnail" alt="" class="avatar"/>
-                  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                  <i v-else class="el-icon-plus avatar-uploader-icon" @click="imagePickerOpen = true"></i>
                 </div>
               </div>
             </el-form-item>
@@ -86,14 +86,25 @@
         </el-form-item>
       </div>
     </el-form>
+
+    <el-dialog
+        title="图片选择"
+        :visible.sync="imagePickerOpen"
+    >
+      <ImagePicker></ImagePicker>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+import ImagePicker from "@/components/ImagePicker";
+
 export default {
   name: "BlogDetail",
+  components: {ImagePicker},
   data() {
     return {
+      imagePickerOpen: false,
       form: {
         title: '',
         desc: '',
