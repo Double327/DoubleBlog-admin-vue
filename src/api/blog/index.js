@@ -2,7 +2,7 @@ import request from '@/axios';
 
 export function addBlog(blog) {
     return request({
-        url: '/blog/',
+        url: '/blog/blog/',
         method: 'post',
         data: blog
     });
@@ -47,7 +47,7 @@ export function editBlogPrivate(id, pri) {
     });
 }
 
-export function blogDetails(id) {
+export function getBlogDetail(id) {
     return request({
         url: '/blog/blog/' + id,
         method: 'get'

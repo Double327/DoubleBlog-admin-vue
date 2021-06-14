@@ -17,7 +17,7 @@ export default {
             // 选中行数据
             row: [],
             // 表格遮罩层
-            loading: true,
+            loading: false,
             // 删除按钮遮罩层
             delLoading: false,
             // 总条数
