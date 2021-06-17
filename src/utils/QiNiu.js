@@ -6,8 +6,6 @@ export const upload = (token, obj, next, error, complete) => {
         file
     } = obj
 
-    console.log(file);
-
     // 关于 key 要怎么处理自行解决，但如果为 undefined 或者 null 会使用上传后的 hash 作为 key.
     const key = formatDate(new Date(), "yyyyMMddhhmmss") + file.name;
 
@@ -39,6 +37,6 @@ export const upload = (token, obj, next, error, complete) => {
     }).catch(res => {
         console.log(res)
         return res
-    })
+    });
 }
 

@@ -74,7 +74,7 @@
                 </el-form-item>
               </el-col>
               <el-col :span="6">
-                <el-form-item label="是否私有" label-width="60px" prop="comment">
+                <el-form-item label="是否私有" label-width="80px" prop="comment">
                   <el-radio-group v-model="form.private">
                     <el-radio :label="true">是</el-radio>
                     <el-radio :label="false">否</el-radio>
@@ -91,7 +91,8 @@
             >
               <div class="avatar-uploader">
                 <div class="el-upload el-upload--text">
-                  <img v-if="form.thumbnail" :src="form.thumbnail" alt="" class="avatar"/>
+                  <img v-if="form.thumbnail" :src="form.thumbnail" alt="" class="avatar"
+                       @click="imagePickerOpen = true"/>
                   <i v-else class="el-icon-plus avatar-uploader-icon" @click="imagePickerOpen = true"></i>
                 </div>
               </div>
@@ -112,6 +113,7 @@
     >
       <ImagePicker
           @handleThumbnailSelect="handleThumbnailSelect"
+          @closeImagePicker="closeImagePicker"
       ></ImagePicker>
     </el-dialog>
   </div>
@@ -170,30 +172,29 @@ export default {
     }
   },
   created() {
-    let blogCache = MyLocalStorage.Cache.get('blogCache');
-    let fetch = true;
-    if (blogCache !== undefined && blogCache.content !== undefined && blogCache.content.length !== 0) {
-      this.$confirm('检测到本地存在未发布博文,是否继续编辑', '提示', {
-        confirmButtonText: '继续编辑',
-        cancelButtonText: '删除本地记录并新建博文',
-        type: 'warning'
-      }).then(() => {
-        this.msgSuccess('已成功恢复');
-        fetch = false;
-        this.form = blogCache;
-      }).catch(err => {
-        console.log(err);
-        this.msgInfo('已删除');
-        // 删除缓存
-        MyLocalStorage.Cache.remove('blogCache');
-      });
-    }
-    if (fetch && this.isEdit) {
+    if (this.isEdit) {
       const id = this.$route.params && this.$route.params.id;
       this.fetchData(id);
+    } else {
+      let blogCache = MyLocalStorage.Cache.get('blogCache');
+      if (blogCache != null && blogCache.content !== undefined && blogCache.content.length !== 0) {
+        this.$confirm('检测到本地存在未发布博文,是否继续编辑', '提示', {
+          confirmButtonText: '继续编辑',
+          cancelButtonText: '删除本地记录并新建博文',
+          type: 'warning'
+        }).then(() => {
+          this.msgSuccess('已成功恢复');
+          this.form = blogCache;
+        }).catch(err => {
+          console.log(err);
+          this.msgInfo('已删除');
+          // 删除缓存
+          MyLocalStorage.Cache.remove('blogCache');
+        });
+      }
     }
     this.getCategory();
-    // 5分钟自动保存一次
+    // 5秒自动保存一次
     setInterval(() => {
       MyLocalStorage.Cache.put('blogCache', this.form);
     }, 5000);
@@ -205,6 +206,9 @@ export default {
     },
     handleThumbnailSelect(url) {
       this.form.thumbnail = url;
+    },
+    closeImagePicker() {
+      this.imagePickerOpen = false;
     },
     /**提交表单*/
     handleSubmitBlog() {
@@ -231,13 +235,14 @@ export default {
             editBlog(obj).then(res => {
               if (res.code === 200) {
                 this.msgSuccess('发布成功');
+                MyLocalStorage.Cache.remove('blogCache');
                 this.$router.push({path: '/blogManager/blog'});
               } else {
                 this.msgError(res.msg);
               }
             }).catch(err => {
               console.log(err);
-            })
+            });
           }
         }
       })
