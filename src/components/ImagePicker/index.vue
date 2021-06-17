@@ -9,16 +9,35 @@
       </el-tab-pane>
       <el-tab-pane label="本地上传">
         <el-upload
-            class="avatar-uploader"
-            action="http://up.qiniup.com"
-            :show-file-list="false"
-            accept="image/*"
-            :on-success="handleAvatarSuccess"
-            :before-upload="beforeAvatarUpload"
-            :http-request="uploadRequest"
+            action="#"
+            list-type="picture-card"
+            :auto-upload="false"
+            :file-list="fileList"
         >
-          <img v-if="imageUrl" :src="imageUrl" class="avatar">
-          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          <i slot="default" class="el-icon-plus"></i>
+          <div slot="file" slot-scope="{file}"
+               style="width: 100%;height: 100%;">
+            <img
+                style="width: 100%;height: 100%;"
+                class="el-upload-list__item-thumbnail"
+                :src="file.url" alt=""
+            >
+            <span class="el-upload-list__item-actions">
+              <span
+                  class="el-upload-list__item-select"
+                  @click="handleSelected(file)"
+              >
+                <i class="el-icon-check"></i>
+              </span>
+              <span
+                  v-if="!disabled"
+                  class="el-upload-list__item-delete"
+                  @click="handleRemove(file)"
+              >
+                <i class="el-icon-delete"></i>
+              </span>
+            </span>
+          </div>
         </el-upload>
       </el-tab-pane>
       <el-tab-pane label="网络图片">
@@ -36,7 +55,11 @@ export default {
   name: "ImagePicker",
   data() {
     return {
-      imageUrl: ''
+      imageUrl: '',
+      dialogImageUrl: '',
+      disabled: false,
+      dialogVisible: false,
+      fileList: []
     }
   },
   methods: {
@@ -68,41 +91,19 @@ export default {
         this.msgError("图片大小不能超过10MB");
         return isLt10M;
       }
+    },
+    handleSelected(file) {
+      this.$emit('handleThumbnailSelect', file.url);
+    },
+    handleRemove() {
+
     }
   }
 }
 </script>
 
 <style scoped lang="scss">
-.avatar-uploader {
+.drop-upload {
   text-align: center;
-}
-
-.avatar-uploader .el-upload {
-  width: 100%;
-  border: 1px dashed #d9d9d9;
-  border-radius: 6px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-
-.avatar-uploader .el-upload:hover {
-  border-color: #409EFF;
-}
-
-.avatar-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 178px;
-  height: 178px;
-  line-height: 178px;
-  text-align: center;
-}
-
-.avatar {
-  width: 178px;
-  height: 178px;
-  display: block;
 }
 </style>

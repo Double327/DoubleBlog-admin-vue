@@ -7,7 +7,8 @@
         :model="form"
     >
       <sticky :z-index="10" :class-name="'sub-navbar '+(form.status==null?'publish':'draft')">
-        <el-button :loading="loading" style="margin-left: 10px" icon="el-icon-check" type="success" plain @click="handleSubmitBlog">
+        <el-button :loading="loading" style="margin-left: 10px" icon="el-icon-check" type="success" plain
+                   @click="handleSubmitBlog">
           发布
         </el-button>
         <el-button :loading="loading" icon="el-icon-message" type="warning" plain @click="draftBlog">
@@ -109,7 +110,9 @@
         title="图片选择"
         :visible.sync="imagePickerOpen"
     >
-      <ImagePicker></ImagePicker>
+      <ImagePicker
+          @handleThumbnailSelect="handleThumbnailSelect"
+      ></ImagePicker>
     </el-dialog>
   </div>
 </template>
@@ -262,7 +265,7 @@ export default {
           this.msgError(res.msg);
         }
       });
-    }
+    },
   }
 }
 </script>
