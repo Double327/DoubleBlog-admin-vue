@@ -40,7 +40,7 @@
             type="primary"
             icon="el-icon-plus"
             size="mini"
-            @click="handleAdd"
+            @click="handleAdd(0)"
         >新增
         </el-button>
       </el-col>
@@ -67,9 +67,9 @@
     <el-table
         v-loading="loading"
         :data="list"
-        default-expand-all
         row-key="id"
         :tree-props="{children: 'children'}"
+        :indent="30"
     >
       <el-table-column type="selection"/>
       <el-table-column label="ID" prop="id"></el-table-column>
@@ -82,6 +82,7 @@
       </el-table-column>
       <el-table-column>
         <template slot-scope="scope">
+          <el-button v-if="scope.row.parentId === 0" type="text" icon="el-icon-plus" size="mini" @click="handleAdd(scope.row.id)">添加</el-button>
           <el-button type="text" icon="el-icon-edit" size="mini" @click="handleEdit(scope.row)">编辑</el-button>
           <el-popover
               placement="top"
@@ -131,6 +132,11 @@
               placeholder="请选择上级类别"
           >
             <el-option
+              :key="0"
+              :value="0"
+              label="一级分类"
+            ></el-option>
+            <el-option
                 v-for="cate in parentCategoryOptions"
                 :key="cate.id"
                 :label="cate.title"
@@ -165,6 +171,12 @@ export default {
   data() {
     return {
       parentCategoryOptions: [],
+      form: {
+        id: undefined,
+        parentId: undefined,
+        title: '',
+        description: ''
+      },
       rules: {
         title: [
           {required: true, message: '请填写分类名称', trigger: 'blur'},
@@ -198,11 +210,12 @@ export default {
         this.msgError(err);
       });
     },
-    handleAdd() {
+    handleAdd(id) {
       this.reset();
       this.title = '添加博客分类';
       this.form = this.formReset;
       this.getParentCategoryTree();
+      this.form.parentId = id;
       this.open = true;
     },
     handleEdit(row) {
