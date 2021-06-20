@@ -62,6 +62,26 @@ export const constantRoutes = [
                 meta: {title: '修改文章', noCache: false, activeMenu: '/blog/blog'},
             }
         ]
+    },
+    {
+        path: '/projectOperation',
+        component: Layout,
+        hidden: true,
+        redirect: 'noRedirect',
+        children: [
+            {
+                path: 'project/add',
+                component: () => import('@/views/project/project/Add'),
+                name: 'AddProject',
+                meta: {title: '新增项目', noCache: false, activeMenu: '/project/project'},
+            },
+            {
+                path: 'project/edit/:id(\\d+)',
+                component: () => import('@/views/project/project/Edit'),
+                name: 'EditProject',
+                meta: {title: '编辑项目', noCache: false, activeMenu: '/project/project'},
+            },
+        ]
     }
 ]
 

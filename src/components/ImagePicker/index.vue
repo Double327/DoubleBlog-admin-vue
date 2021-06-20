@@ -8,25 +8,29 @@
 
       </el-tab-pane>
       <el-tab-pane label="本地上传">
-        <el-upload
-            action="#"
-            list-type="picture-card"
-            :auto-upload="true"
-            :file-list="fileList"
-            :before-upload="beforeImageUpload"
-            :on-success="handleImageUploadSuccess"
-            :http-request="uploadRequest"
-            multiple
-        >
-          <i slot="default" class="el-icon-plus"></i>
-          <div slot="file" slot-scope="{file}"
-               style="width: 100%;height: 100%;">
-            <img
-                style="width: 100%;height: 100%;"
-                class="el-upload-list__item-thumbnail"
-                :src="file.url" alt=""
-            >
-            <span class="el-upload-list__item-actions">
+        <el-row style="margin-bottom: 20px;" v-if="multiple">
+          <el-button type="success" size="mini" @click="handleMultiSelected">完成选择</el-button>
+        </el-row>
+        <el-row>
+          <el-upload
+              action="#"
+              list-type="picture-card"
+              :auto-upload="true"
+              :file-list="fileList"
+              :before-upload="beforeImageUpload"
+              :on-success="handleImageUploadSuccess"
+              :http-request="uploadRequest"
+              multiple
+          >
+            <i slot="default" class="el-icon-plus"></i>
+            <div slot="file" slot-scope="{file}"
+                 style="width: 100%;height: 100%;">
+              <img
+                  style="width: 100%;height: 100%;"
+                  class="el-upload-list__item-thumbnail"
+                  :src="file.url" alt=""
+              >
+              <span class="el-upload-list__item-actions">
               <span
                   class="el-upload-list__item-select"
                   @click="handleSelected(file)"
@@ -41,10 +45,11 @@
                 <i class="el-icon-delete"></i>
               </span>
             </span>
-          </div>
-        </el-upload>
-        <el-progress v-show="loadPercent > 0 && loadPercent !== 100" :percentage="loadPercent"
-                     status="success"></el-progress>
+            </div>
+          </el-upload>
+          <el-progress v-show="loadPercent > 0 && loadPercent !== 100" :percentage="loadPercent"
+                       status="success"></el-progress>
+        </el-row>
       </el-tab-pane>
       <el-tab-pane label="网络图片">
         网络地址
@@ -60,22 +65,21 @@ import {formatDate} from "element-ui/src/utils/date-util";
 
 export default {
   name: "ImagePicker",
+  props: {
+    multiple: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       imageUrl: '',
+      selectList: [],
       dialogImageUrl: '',
       disabled: false,
       dialogVisible: false,
       loadPercent: 0,
-      fileList: [
-        {
-          name: 'food.jpeg',
-          url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
-        }, {
-          name: 'food2.jpeg',
-          url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
-        }
-      ],
+      fileList: [],
       zones: {
         '华东': "z0",
         '华北': "z1",
@@ -165,6 +169,16 @@ export default {
     handleSelected(file) {
       this.$emit('handleThumbnailSelect', file.url);
       this.$emit('closeImagePicker');
+    },
+    handleMultiSelected() {
+      let screenshots = []
+      for (let i = 0; i < this.fileList.length; i++) {
+        console.log(this.fileList[i]);
+        screenshots.push({
+          'url': this.fileList[i].url
+        });
+      }
+      this.$emit('handleScreenshotSelect', screenshots);
     },
     handleRemove() {
 
