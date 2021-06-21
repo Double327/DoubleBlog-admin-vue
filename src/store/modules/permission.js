@@ -1,6 +1,6 @@
-import {constantRoutes} from '@/router/routes'
-import {getRouters} from '@/api/menu'
-import Layout from '@/layout/index'
+import {constantRoutes} from '@/router/routes';
+import {getRouters} from '@/api/menu';
+import Layout from '@/layout/index';
 
 const permission = {
     state: {
@@ -22,8 +22,8 @@ const permission = {
                     const accessedRoutes = filterAsyncRouter(res.data);
                     commit('SET_ROUTES', accessedRoutes);
                     resolve(accessedRoutes)
-                });
-            });
+                })
+            })
         }
     }
 };

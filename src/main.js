@@ -4,7 +4,7 @@ import router from '@/router/routes';
 import store from './store';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
-
+import '@/assets/icons/index';
 import '@/assets/style/index.scss'
 import '@/assets/style/doubleblog.scss'
 

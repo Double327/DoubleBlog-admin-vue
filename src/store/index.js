@@ -5,16 +5,15 @@ import permission from "@/store/modules/permission";
 import settings from "@/store/modules/settings";
 import getters from "@/store/getters";
 import user from "@/store/modules/user";
+import tagsView from "@/store/modules/tagsView";
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-    state: {},
-    mutations: {},
-    actions: {},
     modules: {
         app,
         user,
+        tagsView,
         permission,
         settings
     },
