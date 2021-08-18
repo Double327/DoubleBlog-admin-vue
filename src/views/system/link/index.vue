@@ -27,7 +27,7 @@
       </el-col>
       <el-col :span="1.5">
         <el-button type="success" icon="el-icon-edit" size="mini" :disabled="single"
-                   @click="handleUpdate(null)">修改
+                   @click="handleEdit(null)">修改
         </el-button>
       </el-col>
       <el-col :span="1.5">
@@ -63,7 +63,7 @@
         <template slot-scope="scope">
           <div v-if="scope.row.status">
             <el-button size="mini" type="text"
-                       @click="handleUpdate(scope.row)">修改
+                       @click="handleEdit(scope.row)">修改
             </el-button>
             <el-popover :ref="scope.row.id" placement="top" width="180">
               <p>确定删除本条数据吗？</p>

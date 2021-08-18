@@ -54,8 +54,8 @@ export default {
       codeUrl: "",
       cookiePassword: "",
       loginForm: {
-        username: "",
-        password: "",
+        username: "admin",
+        password: "123456",
         rememberMe: false,
         code: "",
         uuid: ""
@@ -115,15 +115,12 @@ export default {
             Cookies.remove("password");
             Cookies.remove('rememberMe');
           }
-          this.$store
-              .dispatch("Login", this.loginForm)
-              .then(() => {
-                this.$router.push({path: this.redirect || "/"});
-              })
-              .catch(() => {
-                this.getCode();
-                this.loading = false;
-              });
+          this.$store.dispatch("Login", this.loginForm).then(() => {
+            this.$router.push({path: this.redirect || "/"});
+          }).catch(() => {
+            this.getCode();
+            this.loading = false;
+          });
         }
       });
     }

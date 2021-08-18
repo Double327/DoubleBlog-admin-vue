@@ -31,12 +31,14 @@ router.beforeEach((to, from, next) => {
                         accessRoutes.push({path: '*', redirect: '/404', hidden: true});
                         router.addRoutes(accessRoutes); // 动态添加可访问路由表
                         next({...to, replace: true}) // hack方法 确保addRoutes已完成
-                    })
+                    });
                 }).catch(err => {
+                    console.log('错误')
                     console.log(err);
+                    console.log('错误')
                     store.dispatch('FedLogOut').then(() => {
-                        location.reload() // 为了重新实例化vue-router对象 避免bug
-                    })
+                        // location.reload() // 为了重新实例化vue-router对象 避免bug
+                    });
                 })
             } else {
                 next()

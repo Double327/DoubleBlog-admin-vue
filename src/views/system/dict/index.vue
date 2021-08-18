@@ -12,10 +12,10 @@
       <el-form-item label="状态">
         <el-select v-model="queryParams.status" placeholder="字典状态" clearable size="small" style="width: 240px">
           <el-option
-            v-for="dict in statusOptions"
-            :key="dict.dictValue"
-            :label="dict.dictLabel"
-            :value="dict.dictValue"
+              v-for="dict in statusOptions"
+              :key="dict.dictValue"
+              :label="dict.dictLabel"
+              :value="dict.dictValue"
           />
         </el-select>
       </el-form-item>
@@ -37,7 +37,7 @@
       </el-col>
       <el-col :span="1.5">
         <el-button type="success" icon="el-icon-edit" size="mini" :disabled="single"
-                   @click="handleUpdate(null)">修改
+                   @click="handleEdit(null)">修改
         </el-button>
       </el-col>
       <el-col :span="1.5">
@@ -72,7 +72,7 @@
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button size="mini" type="text" icon="el-icon-edit"
-                     @click="handleUpdate(scope.row)">修改
+                     @click="handleEdit(scope.row)">修改
           </el-button>
           <el-popover :ref="scope.row.id" placement="top" width="180">
             <p>确定删除本条数据吗？</p>
@@ -104,10 +104,10 @@
         <el-form-item label="状态" prop="status">
           <el-radio-group v-model="form.status">
             <el-radio
-              v-for="dict in statusOptions"
-              :key="dict.dictValue"
-              :label="dict.dictValue"
-            >{{dict.dictLabel}}
+                v-for="dict in statusOptions"
+                :key="dict.dictValue"
+                :label="dict.dictValue"
+            >{{ dict.dictLabel }}
             </el-radio>
           </el-radio-group>
         </el-form-item>
@@ -124,50 +124,49 @@
 </template>
 
 <script>
-  import initData from '@/mixins/initData'
+import initData from '@/mixins/initData'
 
-  export default {
-    mixins: [initData],
-    data() {
-      return {
-        // 状态数据字典
-        statusOptions: [],
-        // 查询参数
-        queryParams: {
-          dictName: undefined,
-          dictType: undefined,
-          status: undefined
-        },
-        // 表单校验
-        rules: {
-          dictName: [
-            {required: true, message: "字典名称不能为空", trigger: "blur"}
-          ],
-          dictType: [
-            {required: true, message: "字典类型不能为空", trigger: "blur"}
-          ]
-        }
-      };
-    },
-    created() {
-      this.$nextTick(() => {
-        this.init()
-      });
-      this.getDicts("sys_normal_disable").then(response => {
-        this.statusOptions = response.data;
-      });
-    },
-    methods: {
-      beforeInit() {
-        this.base = '/system/dict/type';
-        this.modelName = '字典';
-        return true
+export default {
+  mixins: [initData],
+  data() {
+    return {
+      // 状态数据字典
+      statusOptions: [],
+      // 查询参数
+      queryParams: {
+        dictName: undefined,
+        dictType: undefined,
+        status: undefined
       },
-      // 字典状态字典翻译
-      statusFormat(row, column) {
-        console.log(column);
-        return this.selectDictLabel(this.statusOptions, row.status);
-      },
-    }
-  };
+      // 表单校验
+      rules: {
+        dictName: [
+          {required: true, message: "字典名称不能为空", trigger: "blur"}
+        ],
+        dictType: [
+          {required: true, message: "字典类型不能为空", trigger: "blur"}
+        ]
+      }
+    };
+  },
+  created() {
+    this.$nextTick(() => {
+      this.init()
+    });
+    this.getDict("sys_normal_disable").then(response => {
+      this.statusOptions = response.data;
+    });
+  },
+  methods: {
+    beforeInit() {
+      this.base = '/system/dict/type';
+      this.modelName = '字典';
+      return true
+    },
+    // 字典状态字典翻译
+    statusFormat(row) {
+      return this.selectDictLabel(this.statusOptions, row.status);
+    },
+  }
+};
 </script>

@@ -1,20 +1,21 @@
 <template>
   <div class="navbar">
-    <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container"
-               @toggleClick="toggleSideBar"/>
+    <!-- 汉堡图标 收起侧边栏 -->
+    <hamburger
+        id="hamburger-container"
+        :is-active="sidebar.opened"
+        class="hamburger-container"
+        @toggleClick="toggleSideBar"
+    />
+    <!-- 面包屑导航 -->
     <breadcrumb/>
 
+    <!-- 右边工具栏 -->
     <div class="right-menu">
       <template v-if="device !== 'mobile'">
-        <el-tooltip content="搜索" effect="dark" placement="bottom">
-
-        </el-tooltip>
-        <el-tooltip content="全屏" effect="dark" placement="bottom">
-
-        </el-tooltip>
-        <el-tooltip content="布局大小" effect="dark" placement="bottom">
-
-        </el-tooltip>
+        <el-tooltip content="搜索" effect="dark" placement="bottom"></el-tooltip>
+        <el-tooltip content="全屏" effect="dark" placement="bottom"></el-tooltip>
+        <el-tooltip content="布局大小" effect="dark" placement="bottom"></el-tooltip>
       </template>
 
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
@@ -73,30 +74,32 @@ export default {
 
 <style scoped lang="scss">
 .navbar {
-  height: 50px;
-  overflow: hidden;
+  display: flex;
+  justify-content: space-between;
   position: relative;
-  background: #fff;
+  height: 50px;
   box-shadow: 0 1px 4px rgba(0, 21, 41, .08);
+  overflow: hidden;
+  background: #fff;
 
   .hamburger-container {
-    line-height: 46px;
     height: 100%;
-    float: left;
+    padding-left: 10px;
+    line-height: 46px;
     cursor: pointer;
     transition: background .3s;
     -webkit-tap-highlight-color: transparent;
 
     &:hover {
       background: rgba(0, 0, 0, .025);
-
     }
   }
 
   .right-menu {
-    float: right;
+    flex: 1;
     height: 100%;
     line-height: 50px;
+    text-align: right;
 
     &:focus {
       outline: none;
@@ -122,6 +125,7 @@ export default {
 
     .avatar-container {
       margin-right: 30px;
+
       .avatar-wrapper {
         margin-top: 5px;
         position: relative;

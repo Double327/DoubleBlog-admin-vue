@@ -45,7 +45,7 @@
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button size="mini" type="text" icon="el-icon-edit"
-                     @click="handleUpdate(scope.row)">修改
+                     @click="handleEdit(scope.row)">修改
           </el-button>
           <el-popover :ref="scope.row.id" placement="top" width="180">
             <p>确定删除本条数据吗？</p>
@@ -145,7 +145,7 @@
     },
     created() {
       this.getList();
-      this.getDicts("sys_yes_no").then(response => {
+      this.getDict("sys_yes_no").then(response => {
         this.typeOptions = response.data;
       });
     },
@@ -213,7 +213,7 @@
         this.title = "添加参数";
       },
       /** 修改按钮操作 */
-      handleUpdate(row) {
+      handleEdit(row) {
         this.reset();
         getConfig(row.id).then(response => {
           this.form = response.data;

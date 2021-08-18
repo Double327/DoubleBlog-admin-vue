@@ -34,12 +34,13 @@ export default {
 <style scoped>
 .hamburger {
   display: inline-block;
-  vertical-align: middle;
   width: 20px;
   height: 20px;
+  vertical-align: middle;
+  transition: all ease-in-out .3s;
 }
 
 .hamburger.is-active {
-  transform: rotate(180deg);
+  transform: rotateY(180deg);
 }
 </style>

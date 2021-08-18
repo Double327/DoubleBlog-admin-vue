@@ -22,7 +22,7 @@ const permission = {
                     const accessedRoutes = filterAsyncRouter(res.data);
                     commit('SET_ROUTES', accessedRoutes);
                     resolve(accessedRoutes)
-                })
+                });
             })
         }
     }

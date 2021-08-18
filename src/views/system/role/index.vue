@@ -37,7 +37,7 @@
       </el-col>
       <el-col :span="1.5">
         <el-button type="success" icon="el-icon-edit" size="mini" :disabled="single"
-                   @click="handleUpdate(null)">修改
+                   @click="handleEdit(null)">修改
         </el-button>
       </el-col>
       <el-col :span="1.5">
@@ -71,7 +71,7 @@
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button size="mini" type="text" icon="el-icon-edit"
-                     @click="handleUpdate(scope.row)">修改
+                     @click="handleEdit(scope.row)">修改
           </el-button>
           <el-popover :ref="scope.row.id" placement="top" width="180">
             <p>确定删除本条数据吗？</p>
@@ -177,7 +177,7 @@
       this.$nextTick(() => {
         this.init()
       });
-      this.getDicts("sys_normal_disable").then(response => {
+      this.getDict("sys_normal_disable").then(response => {
         this.statusOptions = response.data;
       });
     },
@@ -268,7 +268,7 @@
         this.title = "添加角色";
       },
       /** 修改按钮操作 */
-      handleUpdate(row) {
+      handleEdit(row) {
         this.reset();
         this.$nextTick(() => {
           this.getRoleMenuTreeselect(row.id);

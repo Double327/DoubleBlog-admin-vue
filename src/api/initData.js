@@ -9,7 +9,7 @@ export function get(url, id) {
 
 export function list(url, params) {
     return request({
-        url: url,
+        url: url + '/list',
         method: 'get',
         params: params
     });

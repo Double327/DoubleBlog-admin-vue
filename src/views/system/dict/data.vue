@@ -5,7 +5,7 @@
         <el-select v-model="queryParams.dictType" size="small">
           <el-option
             v-for="item in typeOptions"
-            :key="item.dictId"
+            :key="item.id"
             :label="item.dictName"
             :value="item.dictType"
           />
@@ -52,7 +52,7 @@
           icon="el-icon-edit"
           size="mini"
           :disabled="single"
-          @click="handleUpdate"
+          @click="handleEdit"
           v-hasPermi="['system:dict:edit']"
         >修改</el-button>
       </el-col>
@@ -96,7 +96,7 @@
             size="mini"
             type="text"
             icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
+            @click="handleEdit(scope.row)"
             v-hasPermi="['system:dict:edit']"
           >修改</el-button>
           <el-button
@@ -212,7 +212,7 @@
       const dictId = this.$route.params && this.$route.params.dictId;
       this.getType(dictId);
       this.getTypeList();
-      this.getDicts("sys_normal_disable").then(response => {
+      this.getDict("sys_normal_disable").then(response => {
         this.statusOptions = response.data;
       });
     },
@@ -287,7 +287,7 @@
         this.multiple = !selection.length
       },
       /** 修改按钮操作 */
-      handleUpdate(row) {
+      handleEdit(row) {
         this.reset();
         const dictCode = row.dictCode || this.ids
         getData(dictCode).then(response => {

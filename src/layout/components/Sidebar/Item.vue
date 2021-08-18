@@ -1,24 +1,32 @@
-<template>
-  <div>
-    <svg-icon v-if="icon" :icon-class="icon"></svg-icon>
-    <span v-if="title">{{ title }}</span>
-  </div>
-</template>
 <script>
-import SvgIcon from "@/components/SvgIcon";
-
 export default {
-  name: 'MenuItem',
-  components: {SvgIcon},
+  name: "Item",
+  functional: true,
   props: {
-    icon: {
-      type: String,
-      default: ''
-    },
     title: {
       type: String,
       default: ''
+    },
+    icon: {
+      type: String,
+      default: ''
     }
+  },
+  render(h, context) {
+    const {title, icon} = context.props;
+
+    let vNodes = []
+    if (icon) {
+      vNodes.push(<svg-icon icon-class={icon}/>)
+    }
+    if (title) {
+      vNodes.push(<span slot="title">{(title)}</span>)
+    }
+    return vNodes;
   }
 }
 </script>
+
+<style scoped>
+
+</style>

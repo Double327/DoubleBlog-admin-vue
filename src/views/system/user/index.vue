@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-form :inline="true" label-width="68px">
       <el-form-item label="用户名称">
-        <el-input v-model="queryParams.userName" placeholder="请输入用户名称" clearable size="small"
+        <el-input v-model="queryParams.username" placeholder="请输入用户名称" clearable size="small"
                   @keyup.enter.native="handleQuery"/>
       </el-form-item>
       <el-form-item label="手机号码">
@@ -39,7 +39,7 @@
       </el-col>
       <el-col :span="1.5">
         <el-button type="success" icon="el-icon-edit" size="mini" :disabled="single"
-                   @click="handleUpdate(null)">修改
+                   @click="handleEdit(null)">修改
         </el-button>
       </el-col>
       <el-col :span="1.5">
@@ -56,8 +56,8 @@
 
     <el-table v-loading="loading" :data="list" @selection-change="handleSelectionChange">
       <el-table-column type="selection" align="center"/>
-      <el-table-column label="用户名称" align="center" prop="userName"/>
-      <el-table-column label="用户昵称" align="center" prop="nickName"/>
+      <el-table-column label="用户名称" align="center" prop="username"/>
+      <el-table-column label="用户昵称" align="center" prop="nickname"/>
       <el-table-column label="手机号码" align="center" prop="phone"/>
       <el-table-column label="状态" align="center">
         <template slot-scope="scope">
@@ -73,7 +73,7 @@
       <el-table-column label="操作" align="center" width="180" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button size="mini" type="text" icon="el-icon-edit"
-                     @click="handleUpdate(scope.row)">修改
+                     @click="handleEdit(scope.row)">修改
           </el-button>
           <el-popover :ref="scope.row.id" placement="top" width="180">
             <p>确定删除本条数据吗？</p>
@@ -101,8 +101,8 @@
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-row>
           <el-col :span="12">
-            <el-form-item label="用户昵称" prop="nickName">
-              <el-input v-model="form.nickName" placeholder="请输入用户昵称"/>
+            <el-form-item label="用户昵称" prop="nickname">
+              <el-input v-model="form.nickname" placeholder="请输入用户昵称"/>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -116,12 +116,12 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="用户名称" prop="userName">
-              <el-input v-model="form.userName" placeholder="请输入用户名称"/>
+            <el-form-item label="用户名称" prop="username">
+              <el-input v-model="form.username" placeholder="请输入用户名称"/>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item v-if="form.id == undefined" label="用户密码" prop="password">
+            <el-form-item v-if="form.id === undefined" label="用户密码" prop="password">
               <el-input v-model="form.password" placeholder="请输入用户密码" type="password"/>
             </el-form-item>
           </el-col>
@@ -186,6 +186,7 @@ import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 import initData from '@/mixins/initData'
 
 export default {
+  name: 'User',
   mixins: [initData],
   // components: {Treeselect},
   data() {
@@ -204,16 +205,19 @@ export default {
       },
       // 查询参数
       queryParams: {
-        userName: undefined,
+        username: undefined,
+        nickname: undefined,
         phone: undefined,
+        password: undefined,
         status: undefined,
+        email: undefined
       },
       // 表单校验
       rules: {
-        userName: [
+        username: [
           {required: true, message: "用户名称不能为空", trigger: "blur"}
         ],
-        nickName: [
+        nickname: [
           {required: true, message: "用户昵称不能为空", trigger: "blur"}
         ],
         password: [
@@ -240,10 +244,10 @@ export default {
     this.$nextTick(() => {
       this.init()
     });
-    this.getDicts("sys_normal_disable").then(response => {
+    this.getDict("sys_normal_disable").then(response => {
       this.statusOptions = response.data;
     });
-    this.getDicts("sys_user_sex").then(response => {
+    this.getDict("sys_user_sex").then(response => {
       this.sexOptions = response.data;
     });
   },
@@ -292,7 +296,7 @@ export default {
       this.form.password = this.initPassword;
     },
     /** 修改按钮操作 */
-    handleUpdate(row) {
+    handleEdit(row) {
       this.reset();
       this.getRoles();
       getUser(row.id).then(response => {

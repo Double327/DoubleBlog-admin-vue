@@ -1,17 +1,19 @@
 <template>
   <el-breadcrumb class="app-breadcrumb" separator="/">
-    <transition-group name="breadcrumb">
-      <el-breadcrumb-item v-for="(item,index) in levelList" :key="item.path">
-        <span v-if="item.redirect==='noRedirect'||index==levelList.length-1"
-              class="no-redirect">{{ item.meta.title }}</span>
-        <a v-else @click.prevent="handleLink(item)">{{ item.meta.title }}</a>
-      </el-breadcrumb-item>
-    </transition-group>
+    <el-breadcrumb-item
+        v-for="(item, index) in levelList"
+        :key="item.path"
+    >
+      <span v-if="item.redirect === 'noRedirect' || index === levelList.length - 1" class="no-redirect">
+        {{ item.meta.title }}
+      </span>
+      <a v-else @click.prevent="handleLink(item)">{{ item.meta.title }}</a>
+    </el-breadcrumb-item>
   </el-breadcrumb>
 </template>
 
 <script>
-import pathToRegexp from 'path-to-regexp'
+let pathToRegexp = require("path-to-regexp")
 
 export default {
   data() {
@@ -21,63 +23,68 @@ export default {
   },
   watch: {
     $route(route) {
-      // if you go to the redirect page, do not update the breadcrumbs
       if (route.path.startsWith('/redirect/')) {
-        return
+        return;
       }
-      this.getBreadcrumb()
+      this.getBreadcrumbList();
     }
   },
   created() {
-    this.getBreadcrumb()
+    this.getBreadcrumbList();
   },
   methods: {
-    getBreadcrumb() {
-      // only show routes with meta.title
+    /**
+     * 从「 $route.matched 」中获取路由路径
+     */
+    getBreadcrumbList() {
       let matched = this.$route.matched.filter(item => item.meta && item.meta.title);
-      const first = matched[0];
-
-      if (!this.isDashboard(first)) {
-        matched = [{path: '/index', meta: {title: '首页'}}].concat(matched)
+      let firstMatched = matched[0];
+      // 如果当前路由不是首页，则在最前面添加首页
+      if (!this.judgeDashboard(firstMatched)) {
+        matched = [{path: '/index', meta: {title: '首页'}}].concat(matched);
       }
-
-      this.levelList = matched.filter(item => item.meta && item.meta.title && item.meta.breadcrumb !== false)
+      this.levelList = matched.filter(item => item.meta && item.meta.title)
     },
-    isDashboard(route) {
-      const name = route && route.name;
+    /**
+     * 判断当前路由是否为主页
+     * @param route 路由
+     * @returns {boolean} True：是 False：不是
+     */
+    judgeDashboard(route) {
+      const name = route.meta && route.meta.title;
       if (!name) {
-        return false
+        return false;
       }
-      return name.trim() === '首页'
+      return name.trim() === '首页';
     },
     pathCompile(path) {
       const {params} = this.$route;
       let toPath = pathToRegexp.compile(path);
-      return toPath(params)
+      return toPath(params);
     },
-    handleLink(item) {
-      const {redirect, path} = item;
+    handleLink(route) {
+      const {redirect, path} = route;
       if (redirect) {
         this.$router.push(redirect);
-        return
+        return;
       }
-      this.$router.push(this.pathCompile(path))
+      this.$router.push(this.pathCompile(path));
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+
 .app-breadcrumb.el-breadcrumb {
   display: inline-block;
-  font-size: 14px;
+  margin-left: 16px;
   line-height: 50px;
-  margin-left: 8px;
+  font-size: 14px;
 
   .no-redirect {
     color: #97a8be;
     cursor: text;
   }
-
 }
 </style>

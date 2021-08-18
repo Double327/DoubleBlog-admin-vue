@@ -117,7 +117,7 @@ export default {
         },
         /**更新数据*/
         handleEdit(row) {
-            this.row = row || this.row;
+            this.form = row || this.row;
             this.title = '修改' + this.modalName;
             this.open = true;
         },
